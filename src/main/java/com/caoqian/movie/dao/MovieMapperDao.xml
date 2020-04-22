@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.caoqian.movie.dao.MovieMapperDao">
+
+   
+  <select id="list" resultType="Movie">
+    select * from movie
+      <where>
+         <if test="name !=null and name!=''">
+            name like "%"#{name}"%"
+         </if>
+         
+         <if test="actor !=null and actor!=''">
+            and actor =#{actor}
+         </if>
+         
+         <if test="years !=null">
+           and years =#{years}
+         </if>
+         
+         <if test="t1 !=null and t1!=''">
+           and uptime >=#{t1}
+         </if>
+         
+         <if test="t2 !=null and t2!=''">
+           and uptime &lt;=#{t2}
+         </if>
+         
+         <if test="p1 !=null">
+           and price >=#{p1}
+         </if>
+         
+         <if test="p2!=null">
+            and price &lt;#{p2}
+         </if>
+         <if test="l1 !=null">
+         and longtime>=#{l1}
+         </if>
+         
+         <if test="l2 !=null">
+          and longtime &lt;=#{l2}
+         </if>
+         
+      </where>
+      <if test="orderName !=null and orderName!=''">
+        order by ${orderName} ${orderMethod}
+      </if>
+  </select>
+  
+  <delete id="del">
+    delete from movie where id in
+      <foreach collection="array" open="(" item="id" separator="," close=")">
+        #{id}
+      </foreach>
+  </delete>
+</mapper>
